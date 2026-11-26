@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maxim Li — Mechanical Engineering Portfolio | KU Leuven</title>
+  <meta name="description" content="Mechanical Engineering (Werktuigkunde) student portfolio at KU Leuven. Projects in MATLAB/Simulink modeling, CAD prototyping, and structural analysis." />
+
+  <!-- Google Fonts: Inter (UI) & JetBrains Mono (Technical specs, tags, equations) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            navy: {
+              950: '#071120',
+              900: '#0B192C',
+              800: '#132847',
+              700: '#1E3E62',
+            },
+            steel: {
+              600: '#335C81',
+              500: '#4A7C9B',
+            },
+            cyan: {
+              500: '#06B6D4',
+              600: '#0891B2',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Subtle engineering blueprint dot grid background */
+    .bg-blueprint {
+      background-color: #F8FAFC;
+      background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* Smooth card transitions for filtering */
+    .project-card {
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.2s ease,
+                  opacity 0.25s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-3px);
+    }
+
+    /* Custom scrollbar for modal */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F1F5F9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #94A3B8;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748B;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-cyan-500/20 selection:text-navy-900">
+
+  <!-- =====================================================================
+       STICKY TOP NAVIGATION
+       ===================================================================== -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/90">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Brand / Monogram -->
+        <a href="#about" class="flex items-center gap-3 group">
+          <div class="w-9 h-9 rounded-lg bg-navy-900 text-white font-mono font-semibold text-sm flex items-center justify-center border border-navy-700 group-hover:border-cyan-500 transition-colors">
+            ML<span class="text-cyan-400">.</span>
+          </div>
+          <div class="leading-tight">
+            <span class="font-semibold text-navy-900 tracking-tight block text-sm sm:text-base">Maxim Li</span>
+            <span class="font-mono text-[11px] text-slate-500 hidden sm:block">B.Sc. Engineering Science · KU Leuven</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
+          <a href="#about" class="hover:text-navy-900 transition-colors">About</a>
+          <a href="#projects" class="hover:text-navy-900 transition-colors">Projects</a>
+          <a href="#skills" class="hover:text-navy-900 transition-colors">Skills</a>
+          <a href="#education" class="hover:text-navy-900 transition-colors">Education</a>
+          <a href="#contact" class="hover:text-navy-900 transition-colors">Contact</a>
+        </nav>
+
+        <!-- Right CTA + Mobile Toggle -->
+        <div class="flex items-center gap-2.5">
+          <!-- NOTE: Upload your 'Maxim_Li_CV.pdf' to the root of your GitHub Pages repo -->
+          <a href="Maxim_Li_CV.pdf" target="_blank" rel="noopener"
+             onclick="handleCvClick(event)"
+             class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-navy-900 hover:bg-navy-800 text-white text-xs sm:text-sm font-medium shadow-sm transition-all border border-navy-700">
+            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span>Download CV <span class="hidden sm:inline font-mono text-xs text-cyan-300">(PDF)</span></span>
+          </a>
+
+          <!-- Mobile Hamburger Button -->
+          <button id="mobile-menu-btn" type="button" aria-label="Toggle Menu"
+                  class="md:hidden p-2 rounded-lg text-slate-600 hover:text-navy-900 hover:bg-slate-100 border border-slate-200">
+            <svg id="menu-icon-open" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="menu-icon-close" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Dropdown Menu -->
+      <div id="mobile-menu" class="hidden md:hidden pb-4 pt-2 border-t border-slate-100">
+        <div class="flex flex-col space-y-2 text-sm font-medium text-slate-700">
+          <a href="#about" class="px-3 py-2 rounded-lg hover:bg-slate-100">About</a>
+          <a href="#projects" class="px-3 py-2 rounded-lg hover:bg-slate-100">Projects</a>
+          <a href="#skills" class="px-3 py-2 rounded-lg hover:bg-slate-100">Skills</a>
+          <a href="#education" class="px-3 py-2 rounded-lg hover:bg-slate-100">Education</a>
+          <a href="#contact" class="px-3 py-2 rounded-lg hover:bg-slate-100">Contact</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       HERO / ABOUT SECTION
+       ===================================================================== -->
+  <section id="about" class="bg-blueprint border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <!-- Left Bio Column -->
+        <div class="lg:col-span-8 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white border border-slate-200 shadow-xs">
+            <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+            <span class="font-mono text-xs font-medium text-navy-800">Open to Summer 2027 Engineering Student Jobs & Internships</span>
+          </div>
+
+          <div class="space-y-3">
+            <h1 class="text-3xl sm:text-5xl font-bold text-navy-900 tracking-tight">
+              Maxim Li
+            </h1>
+            <p class="text-lg sm:text-xl font-medium text-steel-600">
+              B.Sc. Engineering Science (<span class="text-navy-900 font-semibold">Werktuigkunde / Mechanical Engineering</span>) @ KU Leuven
+            </p>
+          </div>
+
+          <p class="text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl">
+            2nd-year <span class="text-slate-800 font-medium">Burgerlijk Ingenieur</span> student specializing in mechanical engineering, backed by two years of foundational university physics and mathematics coursework. I focus on translating first-principles mechanics and differential equations into working simulations (<span class="font-mono text-sm text-navy-800 bg-slate-200/70 px-1.5 py-0.5 rounded">MATLAB</span>, <span class="font-mono text-sm text-navy-800 bg-slate-200/70 px-1.5 py-0.5 rounded">Python</span>) and tangible prototypes (<span class="font-mono text-sm text-navy-800 bg-slate-200/70 px-1.5 py-0.5 rounded">CAD</span>, <span class="font-mono text-sm text-navy-800 bg-slate-200/70 px-1.5 py-0.5 rounded">FabLab Leuven</span>).
+          </p>
+
+          <!-- Action & Social Links -->
+          <div class="flex flex-wrap items-center gap-3 pt-1">
+            <a href="#projects"
+               class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-navy-900 hover:bg-navy-800 text-white text-sm font-medium transition-colors shadow-sm">
+              <span>Explore Engineering Projects</span>
+              <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </a>
+
+            <!-- Update hrefs with your personal GitHub, LinkedIn, and KU Leuven / personal email -->
+            <a href="https://github.com/maximli" target="_blank" rel="noopener"
+               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white hover:bg-slate-100 text-slate-700 text-sm font-medium border border-slate-300 transition-colors">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+              </svg>
+              <span>GitHub</span>
+            </a>
+
+            <a href="https://linkedin.com/in/maxim-li" target="_blank" rel="noopener"
+               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white hover:bg-slate-100 text-slate-700 text-sm font-medium border border-slate-300 transition-colors">
+              <svg class="w-4 h-4 text-[#0A66C2]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
+              </svg>
+              <span>LinkedIn</span>
+            </a>
+
+            <a href="#contact"
+               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white hover:bg-slate-100 text-slate-700 text-sm font-medium border border-slate-300 transition-colors">
+              <svg class="w-4 h-4 text-steel-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span>Email</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Engineering Spec Card -->
+        <div class="lg:col-span-4">
+          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-5 relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-navy-900 via-steel-600 to-cyan-500"></div>
+
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <span class="font-mono text-xs uppercase tracking-wider text-slate-500">Profile Specification</span>
+              <span class="font-mono text-xs px-2 py-0.5 rounded bg-slate-100 text-navy-900 font-medium">REV 2026.2</span>
+            </div>
+
+            <dl class="space-y-3.5 text-sm">
+              <div class="flex justify-between gap-4">
+                <dt class="text-slate-500 font-mono text-xs">INSTITUTION</dt>
+                <dd class="font-medium text-navy-900 text-right">KU Leuven (Arenberg)</dd>
+              </div>
+              <div class="flex justify-between gap-4">
+                <dt class="text-slate-500 font-mono text-xs">DISCIPLINE</dt>
+                <dd class="font-medium text-navy-900 text-right">Werktuigkunde (Mech. Eng.)</dd>
+              </div>
+              <div class="flex justify-between gap-4">
+                <dt class="text-slate-500 font-mono text-xs">FOUNDATION</dt>
+                <dd class="font-medium text-navy-900 text-right">2 Yrs Physics + 2nd Bach Eng.</dd>
+              </div>
+              <div class="flex justify-between gap-4">
+                <dt class="text-slate-500 font-mono text-xs">LAB ACCESS</dt>
+                <dd class="font-medium text-navy-900 text-right">FabLab Leuven (FDM / Laser)</dd>
+              </div>
+              <div class="flex justify-between gap-4">
+                <dt class="text-slate-500 font-mono text-xs">LOCATION</dt>
+                <dd class="font-medium text-navy-900 text-right">Leuven / Limburg, Belgium</dd>
+              </div>
+            </dl>
+
+            <div class="pt-2 border-t border-slate-100">
+              <p class="font-mono text-[11px] text-slate-500 leading-relaxed">
+                // Focused on analytical modeling, mechanical design tolerances, and hands-on engineering validation.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       PROJECTS SECTION (FILTERABLE GRID + MODAL)
+       ===================================================================== -->
+  <section id="projects" class="py-16 sm:py-20 bg-white border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header & Filter Tabs -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div class="space-y-2">
+          <div class="font-mono text-xs uppercase tracking-wider text-cyan-600 font-semibold">01 // Engineering Portfolio</div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-navy-900 tracking-tight">Selected Technical Projects</h2>
+          <p class="text-slate-600 text-sm sm:text-base max-w-xl">
+            Click any project card to inspect governing equations, engineering methodology, and validation results.
+          </p>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div id="filter-bar" class="flex flex-wrap gap-2" role="tablist" aria-label="Filter projects by category">
+          <button type="button" data-filter="all"
+                  class="filter-btn active px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium bg-navy-900 text-white border border-navy-900 transition-all">
+            All <span class="font-mono text-[11px] opacity-75 ml-1">(4)</span>
+          </button>
+          <button type="button" data-filter="simulation"
+                  class="filter-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 transition-all">
+            Simulation & MATLAB
+          </button>
+          <button type="button" data-filter="cad"
+                  class="filter-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 transition-all">
+            CAD & Prototyping
+          </button>
+          <button type="button" data-filter="structural"
+                  class="filter-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 transition-all">
+            Structural & Data
+          </button>
+        </div>
+      </div>
+
+      <!-- Projects Grid -->
+      <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+
+        <!-- =================================================================
+             PROJECT 1: Quarter-Car Suspension Dynamics Simulator
+             HOW TO UPDATE: Replace the SVG block below with an <img> tag pointing
+             to your exported MATLAB response plot (e.g., src="assets/suspension_plot.png")
+             ================================================================= -->
+        <article data-category="simulation" data-project-id="suspension"
+                 onclick="openProjectModal('suspension')"
+                 class="project-card cursor-pointer group bg-slate-50/70 hover:bg-white rounded-xl border border-slate-200 hover:border-steel-500 shadow-xs hover:shadow-md overflow-hidden flex flex-col">
+          <!-- Technical Schematic / Plot Header -->
+          <div class="h-48 bg-navy-950 relative border-b border-slate-200 p-4 flex items-center justify-center overflow-hidden">
+            <span class="absolute top-3 left-3 font-mono text-[11px] text-cyan-400 bg-navy-900/90 border border-navy-700 px-2 py-0.5 rounded">
+              FIG 1.1 · STEP RESPONSE x(t)
+            </span>
+            <span class="absolute top-3 right-3 font-mono text-[11px] text-slate-400">
+              mẍ + cẋ + kx = F(t)
+            </span>
+            <!-- Inline SVG: Mass-Spring-Damper Step Response Comparison -->
+            <svg class="w-full h-32 mt-4" viewBox="0 0 400 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Damped oscillation response curves">
+              <!-- Grid lines -->
+              <line x1="30" y1="20" x2="380" y2="20" stroke="#1E3E62" stroke-dasharray="3 3" stroke-width="1" />
+              <line x1="30" y1="65" x2="380" y2="65" stroke="#335C81" stroke-width="1" />
+              <line x1="30" y1="110" x2="380" y2="110" stroke="#1E3E62" stroke-dasharray="3 3" stroke-width="1" />
+              <line x1="30" y1="15" x2="30" y2="115" stroke="#4A7C9B" stroke-width="1.5" />
+              <!-- Underdamped curve (zeta = 0.25) -->
+              <path d="M 30 110 C 55 15, 75 15, 95 65 C 115 105, 135 100, 155 65 C 175 40, 195 45, 215 65 C 235 78, 255 75, 275 65 L 380 65"
+                    stroke="#06B6D4" stroke-width="2.2" fill="none" />
+              <!-- Critically damped curve (zeta = 1.0) -->
+              <path d="M 30 110 C 60 72, 100 65, 160 65 L 380 65"
+                    stroke="#F8FAFC" stroke-width="2" stroke-dasharray="5 3" fill="none" />
+              <!-- Legend -->
+              <circle cx="255" cy="28" r="3.5" fill="#06B6D4" />
+              <text x="264" y="31" fill="#94A3B8" font-family="JetBrains Mono, monospace" font-size="9">ζ = 0.25 (Underdamped)</text>
+              <line x1="251" y1="42" x2="260" y2="42" stroke="#F8FAFC" stroke-width="2" stroke-dasharray="3 2" />
+              <text x="264" y="45" fill="#94A3B8" font-family="JetBrains Mono, monospace" font-size="9">ζ = 1.00 (Critical)</text>
+            </svg>
+          </div>
+
+          <!-- Card Body -->
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-mono text-xs font-medium text-cyan-700 bg-cyan-50 border border-cyan-200 px-2.5 py-0.5 rounded">
+                  Simulation & MATLAB
+                </span>
+                <span class="font-mono text-xs text-slate-400 group-hover:text-navy-900 transition-colors">
+                  Inspect →
+                </span>
+              </div>
+              <h3 class="text-lg font-bold text-navy-900 group-hover:text-steel-600 transition-colors">
+                Quarter-Car Suspension Dynamics Simulator
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Modeled a 2-DOF mass-spring-damper vehicle suspension system subjected to road step and speed-bump excitations, evaluating ride comfort (peak sprung acceleration) versus settling time.
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-slate-200/80 flex flex-wrap gap-1.5">
+              <span class="font-mono text-[11px] bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded">MATLAB</span>
+              <span class="font-mono text-[11px] bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded">Simulink</span>
+              <span class="font-mono text-[11px] bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded">ODE45 / State-Space</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- =================================================================
+             PROJECT 2: Ecological Cycle-Pedestrian Bridge (Buda Canal)
+             HOW TO UPDATE: Replace SVG with an <img> of your SBE Student Challenge
+             render or structural cross-section diagram.
+             ================================================================= -->
+        <article data-category="structural" data-project-id="bridge"
+                 onclick="openProjectModal('bridge')"
+                 class="project-card cursor-pointer group bg-slate-50/70 hover:bg-white rounded-xl border border-slate-200 hover:border-steel-500 shadow-xs hover:shadow-md overflow-hidden flex flex-col">
+          <div class="h-48 bg-navy-950 relative border-b border-slate-200 p-4 flex items-center justify-center overflow-hidden">
+            <span class="absolute top-3 left-3 font-mono text-[11px] text-cyan-400 bg-navy-900/90 border border-navy-700 px-2 py-0.5 rounded">
+              FIG 2.1 · S-CURVE CABLE STAY
+            </span>
+            <span class="absolute top-3 right-3 font-mono text-[11px] text-slate-400">
+              SBE CHALLENGE
+            </span>
+            <!-- Inline SVG: Cable-Stayed Ecocycloduct Elevation & Soil Profile -->
+            <svg class="w-full h-32 mt-4" viewBox="0 0 400 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Cable-stayed ecological bridge structural elevation">
+              <!-- Canal water level -->
+              <rect x="110" y="96" width="180" height="22" fill="#0891B2" fill-opacity="0.18" />
+              <line x1="110" y1="96" x2="290" y2="96" stroke="#06B6D4" stroke-width="1.5" stroke-dasharray="4 3" />
+              <!-- Banks -->
+              <path d="M 20 82 L 105 82 L 118 118 L 20 118 Z" fill="#1E3E62" fill-opacity="0.45" />
+              <path d="M 380 82 L 295 82 L 282 118 L 380 118 Z" fill="#1E3E62" fill-opacity="0.45" />
+              <!-- Concrete Piers -->
+              <rect x="132" y="24" width="8" height="94" fill="#CBD5E1" />
+              <rect x="260" y="24" width="8" height="94" fill="#CBD5E1" />
+              <!-- Full-locked coil stay cables -->
+              <line x1="136" y1="28" x2="70" y2="78" stroke="#06B6D4" stroke-width="1.2" />
+              <line x1="136" y1="28" x2="100" y2="78" stroke="#06B6D4" stroke-width="1.2" />
+              <line x1="136" y1="28" x2="172" y2="78" stroke="#06B6D4" stroke-width="1.2" />
+              <line x1="136" y1="28" x2="200" y2="78" stroke="#06B6D4" stroke-width="1.2" />
+              <line x1="264" y1="28" x2="200" y2="78" stroke="#06B6D4" stroke-width="1.2" />
+              <line x1="264" y1="28" x2="228" y2="78" stroke="#06B6D4" stroke-width="1.2" />
+              <line x1="264" y1="28" x2="300" y2="78" stroke="#06B6D4" stroke-width="1.2" />
+              <line x1="264" y1="28" x2="330" y2="78" stroke="#06B6D4" stroke-width="1.2" />
+              <!-- Bridge Deck + Ecological Soil Layer -->
+              <path d="M 25 80 Q 200 72 375 80" stroke="#F8FAFC" stroke-width="4" fill="none" />
+              <path d="M 45 77 Q 200 69 355 77" stroke="#34D399" stroke-width="2" fill="none" />
+              <text x="163" y="111" fill="#67E8F9" font-family="JetBrains Mono, monospace" font-size="8.5">BUDA CANAL SPAN</text>
+            </svg>
+          </div>
+
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-mono text-xs font-medium text-navy-800 bg-slate-200/80 border border-slate-300 px-2.5 py-0.5 rounded">
+                  Structural & Data
+                </span>
+                <span class="font-mono text-xs text-slate-400 group-hover:text-navy-900 transition-colors">
+                  Inspect →
+                </span>
+              </div>
+              <h3 class="text-lg font-bold text-navy-900 group-hover:text-steel-600 transition-colors">
+                Ecological Cycle-Pedestrian Bridge (Buda Canal)
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Conceptual structural and ecological engineering design of an S-shaped ecocycloduct spanning the Buda Canal, combining full-locked coil stay cables, concrete piers, and graded soil-substrate layers.
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-slate-200/80 flex flex-wrap gap-1.5">
+              <span class="font-mono text-[11px] bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded">Structural Mechanics</span>
+              <span class="font-mono text-[11px] bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded">CAD Layout</span>
+              <span class="font-mono text-[11px] bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded">SBE Challenge</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- =================================================================
+             PROJECT 3: Parametric Planetary Gear & Tolerance Study
+             HOW TO UPDATE: Replace SVG with an <img> of your Autodesk Fusion
+             render or photo of your 3D-printed FabLab Leuven prototype.
+             ================================================================= -->
+        <article data-category="cad" data-project-id="planetary"
+                 onclick="openProjectModal('planetary')"
+                 class="project-card cursor-pointer group bg-slate-50/70 hover:bg-white rounded-xl border border-slate-200 hover:border-steel-500 shadow-xs hover:shadow-md overflow-hidden flex flex-col">
+          <div class="h-48 bg-navy-950 relative border-b border-slate-200 p-4 flex items-center justify-center overflow-hidden">
+            <span class="absolute top-3 left-3 font-mono text-[11px] text-cyan-400 bg-navy-900/90 border border-navy-700 px-2 py-0.5 rounded">
+              FIG 3.1 · Δc = 0.25 mm FIT
+            </span>
+            <span class="absolute top-3 right-3 font-mono text-[11px] text-slate-400">
+              i = 1 + Z_r / Z_s
+            </span>
+            <!-- Inline SVG: Parametric Planetary Gear Wireframe -->
+            <svg class="w-full h-36 mt-3" viewBox="0 0 320 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Parametric planetary gear set technical wireframe">
+              <!-- Centerlines -->
+              <line x1="95" y1="72" x2="225" y2="72" stroke="#335C81" stroke-dasharray="4 3" stroke-width="1" />
+              <line x1="160" y1="12" x2="160" y2="132" stroke="#335C81" stroke-dasharray="4 3" stroke-width="1" />
+              <!-- Outer Ring Gear -->
+              <circle cx="160" cy="72" r="52" stroke="#94A3B8" stroke-width="2" />
+              <circle cx="160" cy="72" r="45" stroke="#06B6D4" stroke-width="1.5" stroke-dasharray="4 2" />
+              <!-- Sun Gear -->
+              <circle cx="160" cy="72" r="16" stroke="#F8FAFC" stroke-width="2" />
+              <circle cx="160" cy="72" r="6" stroke="#06B6D4" stroke-width="1.5" />
+              <!-- 3 Planet Gears -->
+              <g>
+                <circle cx="160" cy="41.5" r="13.5" stroke="#06B6D4" stroke-width="1.8" />
+                <circle cx="160" cy="41.5" r="4" fill="#06B6D4" />
+              </g>
+              <g>
+                <circle cx="133.6" cy="87.2" r="13.5" stroke="#06B6D4" stroke-width="1.8" />
+                <circle cx="133.6" cy="87.2" r="4" fill="#06B6D4" />
+              </g>
+              <g>
+                <circle cx="186.4" cy="87.2" r="13.5" stroke="#06B6D4" stroke-width="1.8" />
+                <circle cx="186.4" cy="87.2" r="4" fill="#06B6D4" />
+              </g>
+              <!-- Dimension Callout -->
+              <line x1="206" y1="45" x2="238" y2="30" stroke="#94A3B8" stroke-width="1" />
+              <text x="242" y="33" fill="#CBD5E1" font-family="JetBrains Mono, monospace" font-size="8.5">m = 1.5 mm</text>
+              <text x="242" y="45" fill="#67E8F9" font-family="JetBrains Mono, monospace" font-size="8.5">FDM PLA+</text>
+            </svg>
+          </div>
+
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-mono text-xs font-medium text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded">
+                  CAD & Prototyping
+                </span>
+                <span class="font-mono text-xs text-slate-400 group-hover:text-navy-900 transition-colors">
+                  Inspect →
+                </span>
+              </div>
+              <h3 class="text-lg font-bold text-navy-900 group-hover:text-steel-600 transition-colors">
+                Parametric Planetary Gear & Tolerance Study
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Equation-driven 3D planetary gear assembly in Autodesk Fusion with user-parameterized backlash and shaft clearances, iteratively 3D-printed at FabLab Leuven to characterize real FDM tolerances.
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-slate-200/80 flex flex-wrap gap-1.5">
+              <span class="font-mono text-[11px] bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded">Autodesk Fusion</span>
+              <span class="font-mono text-[11px] bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded">FDM 3D Printing</span>
+              <span class="font-mono text-[11px] bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded">FabLab Leuven</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- =================================================================
+             PROJECT 4: Automated Beam Bending & Stress Solver
+             HOW TO UPDATE: Replace SVG with an <img> of your Matplotlib
+             Shear Force V(x) & Bending Moment M(x) output diagram.
+             ================================================================= -->
+        <article data-category="structural" data-project-id="beam"
+                 onclick="openProjectModal('beam')"
+                 class="project-card cursor-pointer group bg-slate-50/70 hover:bg-white rounded-xl border border-slate-200 hover:border-steel-500 shadow-xs hover:shadow-md overflow-hidden flex flex-col">
+          <div class="h-48 bg-navy-950 relative border-b border-slate-200 p-4 flex items-center justify-center overflow-hidden">
+            <span class="absolute top-3 left-3 font-mono text-[11px] text-cyan-400 bg-navy-900/90 border border-navy-700 px-2 py-0.5 rounded">
+              FIG 4.1 · V(x) & M(x) DIAGRAMS
+            </span>
+            <span class="absolute top-3 right-3 font-mono text-[11px] text-slate-400">
+              σ_max = M·y / I
+            </span>
+            <!-- Inline SVG: Shear Force & Bending Moment Diagram -->
+            <svg class="w-full h-32 mt-4" viewBox="0 0 400 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Shear force and bending moment diagram">
+              <!-- Beam baseline -->
+              <line x1="40" y1="24" x2="360" y2="24" stroke="#F8FAFC" stroke-width="3" />
+              <!-- Pin & Roller supports -->
+              <polygon points="40,26 33,36 47,36" stroke="#06B6D4" stroke-width="1.5" fill="none" />
+              <polygon points="360,26 353,36 367,36" stroke="#06B6D4" stroke-width="1.5" fill="none" />
+              <!-- Point load arrow -->
+              <line x1="200" y1="4" x2="200" y2="21" stroke="#38BDF8" stroke-width="2" />
+              <polygon points="200,22 196,15 204,15" fill="#38BDF8" />
+              <!-- Shear Force Step V(x) -->
+              <line x1="40" y1="62" x2="360" y2="62" stroke="#335C81" stroke-width="1" />
+              <path d="M 40 62 L 40 46 L 200 46 L 200 78 L 360 78 L 360 62" stroke="#06B6D4" stroke-width="1.8" fill="#06B6D4" fill-opacity="0.12" />
+              <text x="46" y="57" fill="#67E8F9" font-family="JetBrains Mono, monospace" font-size="8">+V</text>
+              <text x="338" y="73" fill="#67E8F9" font-family="JetBrains Mono, monospace" font-size="8">-V</text>
+              <!-- Bending Moment Triangle M(x) -->
+              <line x1="40" y1="115" x2="360" y2="115" stroke="#335C81" stroke-width="1" />
+              <path d="M 40 115 L 200 88 L 360 115 Z" stroke="#F8FAFC" stroke-width="1.8" fill="#F8FAFC" fill-opacity="0.1" />
+              <text x="176" y="110" fill="#F8FAFC" font-family="JetBrains Mono, monospace" font-size="8.5">M_max = PL/4</text>
+            </svg>
+          </div>
+
+          <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-mono text-xs font-medium text-navy-800 bg-slate-200/80 border border-slate-300 px-2.5 py-0.5 rounded">
+                  Structural & Data
+                </span>
+                <span class="font-mono text-xs text-slate-400 group-hover:text-navy-900 transition-colors">
+                  Inspect →
+                </span>
+              </div>
+              <h3 class="text-lg font-bold text-navy-900 group-hover:text-steel-600 transition-colors">
+                Automated Beam Bending & Stress Solver
+              </h3>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                Parametric Python solver computing support reactions, shear force V(x), bending moment M(x), and von Mises/yield safety factors across I-beam, hollow tube, and rectangular profiles.
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-slate-200/80 flex flex-wrap gap-1.5">
+              <span class="font-mono text-[11px] bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded">Python</span>
+              <span class="font-mono text-[11px] bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded">NumPy</span>
+              <span class="font-mono text-[11px] bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded">Matplotlib</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       TECHNICAL SKILLS & TOOLS MATRIX
+       ===================================================================== -->
+  <section id="skills" class="py-16 sm:py-20 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="space-y-2 mb-10">
+        <div class="font-mono text-xs uppercase tracking-wider text-cyan-600 font-semibold">02 // Technical Capabilities</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-navy-900 tracking-tight">Skills & Engineering Toolset</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Category 1: Simulation & Scientific Computing -->
+        <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-navy-900 text-cyan-400 flex items-center justify-center font-mono text-sm font-bold">
+              01
+            </div>
+            <div>
+              <h3 class="font-bold text-navy-900">Simulation & Scientific Computing</h3>
+              <p class="font-mono text-xs text-slate-500">Numerical modeling, ODEs & data visualization</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">MATLAB</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">Simulink</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">Symbolic Math Toolbox</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">Python (NumPy, Matplotlib)</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">LaTeX Technical Reporting</span>
+          </div>
+        </div>
+
+        <!-- Category 2: CAD & Prototyping -->
+        <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-navy-900 text-cyan-400 flex items-center justify-center font-mono text-sm font-bold">
+              02
+            </div>
+            <div>
+              <h3 class="font-bold text-navy-900">CAD & Rapid Prototyping</h3>
+              <p class="font-mono text-xs text-slate-500">Parametric modeling & FabLab Leuven fabrication</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">Autodesk Fusion</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">3D Printing (FDM)</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">Laser Cutting</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">Tolerance & Fit Analysis</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">Technical Drawings</span>
+          </div>
+        </div>
+
+        <!-- Category 3: Core Engineering Foundations -->
+        <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-navy-900 text-cyan-400 flex items-center justify-center font-mono text-sm font-bold">
+              03
+            </div>
+            <div>
+              <h3 class="font-bold text-navy-900">Core Engineering & Physics Foundations</h3>
+              <p class="font-mono text-xs text-slate-500">First-principles analytical problem solving</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">Classical & Analytical Mechanics</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">Thermodynamics</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">Electromagnetism</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">Differential Equations</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">Linear Algebra</span>
+          </div>
+        </div>
+
+        <!-- Category 4: Languages & Collaboration -->
+        <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-navy-900 text-cyan-400 flex items-center justify-center font-mono text-sm font-bold">
+              04
+            </div>
+            <div>
+              <h3 class="font-bold text-navy-900">Languages & Workflow</h3>
+              <p class="font-mono text-xs text-slate-500">Engineering communication & version control</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-cyan-50 border border-cyan-200 text-navy-900 font-medium">Dutch (Native / Fluent)</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-cyan-50 border border-cyan-200 text-navy-900 font-medium">English (Fluent)</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">Git & GitHub</span>
+            <span class="font-mono text-xs px-3 py-1.5 rounded-md bg-slate-50 border border-slate-200 text-navy-900 font-medium">Excel Data Analysis</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       EDUCATION & BACKGROUND TIMELINE
+       ===================================================================== -->
+  <section id="education" class="py-16 sm:py-20 bg-white border-b border-slate-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="space-y-2 mb-10">
+        <div class="font-mono text-xs uppercase tracking-wider text-cyan-600 font-semibold">03 // Academic Background</div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-navy-900 tracking-tight">Education & Analytical Foundation</h2>
+      </div>
+
+      <div class="relative border-l-2 border-slate-200 ml-3 sm:ml-4 space-y-10">
+        <!-- Timeline Item 1 -->
+        <div class="relative pl-7 sm:pl-9">
+          <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-navy-900 border-4 border-cyan-400"></span>
+          <div class="bg-slate-50 rounded-xl border border-slate-200 p-6 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 class="text-lg font-bold text-navy-900">
+                  Bachelor in de ingenieurswetenschappen (Burgerlijk Ingenieur)
+                </h3>
+                <p class="text-sm font-medium text-steel-600">
+                  KU Leuven — Specialization Track: <span class="text-navy-900 font-semibold">Werktuigkunde (Mechanical Engineering)</span>
+                </p>
+              </div>
+              <span class="font-mono text-xs font-medium px-3 py-1 rounded-md bg-white border border-slate-200 text-navy-900 self-start">
+                2024 – Present (2nd Bach)
+              </span>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Rigorous engineering science curriculum covering rigid-body and continuum mechanics, thermodynamics, numerical methods, materials science, and team-based engineering design projects (P&O).
+            </p>
+          </div>
+        </div>
+
+        <!-- Timeline Item 2 -->
+        <div class="relative pl-7 sm:pl-9">
+          <span class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-steel-600 border-4 border-slate-200"></span>
+          <div class="bg-slate-50 rounded-xl border border-slate-200 p-6 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 class="text-lg font-bold text-navy-900">
+                  University Physics & Mathematics Coursework
+                </h3>
+                <p class="text-sm font-medium text-steel-600">
+                  2 Years of Foundational Theoretical & Experimental Physics
+                </p>
+              </div>
+              <span class="font-mono text-xs font-medium px-3 py-1 rounded-md bg-white border border-slate-200 text-slate-600 self-start">
+                2022 – 2024
+              </span>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Built deep mathematical maturity across multivariable calculus, linear algebra, differential equations, classical mechanics, electromagnetism, and experimental lab measurement error analysis prior to transitioning into applied mechanical engineering.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       CONTACT & FOOTER SECTION
+       ===================================================================== -->
+  <footer id="contact" class="bg-navy-950 text-slate-300">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center border-b border-navy-800 pb-12">
+        <div class="lg:col-span-7 space-y-3">
+          <div class="font-mono text-xs uppercase tracking-wider text-cyan-400">04 // Get in Touch</div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+            Looking for a motivated Werktuigkunde student?
+          </h2>
+          <p class="text-slate-400 text-sm sm:text-base max-w-xl leading-relaxed">
+            Available for summer engineering student jobs (<span class="text-slate-200 font-mono text-xs">jobstudent</span>), R&D/CAD support, or voluntary internships in July–September. Feel free to reach out directly via email or LinkedIn.
+          </p>
+        </div>
+
+        <div class="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-end">
+          <!-- Direct Email Copy Widget -->
+          <div class="flex items-center justify-between gap-3 bg-navy-900 border border-navy-700 rounded-lg px-4 py-3 w-full sm:w-auto">
+            <span id="email-text" class="font-mono text-xs sm:text-sm text-cyan-300 select-all">
+              maxim.li@student.kuleuven.be
+            </span>
+            <button type="button" onclick="copyEmail()"
+                    class="px-2.5 py-1 rounded bg-navy-800 hover:bg-navy-700 text-white font-mono text-xs border border-navy-600 transition-colors shrink-0">
+              Copy
+            </button>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <a href="https://github.com/maximli" target="_blank" rel="noopener"
+               class="px-4 py-2.5 rounded-lg bg-navy-900 hover:bg-navy-800 text-white text-xs sm:text-sm font-medium border border-navy-700 transition-colors">
+              GitHub Profile
+            </a>
+            <a href="https://linkedin.com/in/maxim-li" target="_blank" rel="noopener"
+               class="px-4 py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs sm:text-sm font-medium transition-colors">
+              Connect on LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
+        <p>© 2026 Maxim Li · B.Sc. Engineering Science (KU Leuven)</p>
+        <p>Deployed as static single-file HTML on GitHub Pages</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       PROJECT TECHNICAL MODAL (Opens when clicking any project card)
+       ===================================================================== -->
+  <div id="project-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-navy-950/75 backdrop-blur-xs"
+       role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="bg-white rounded-xl border border-slate-200 shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <!-- Modal Top Bar -->
+      <div class="sticky top-0 bg-white/95 backdrop-blur-xs border-b border-slate-200 px-6 py-4 flex items-center justify-between gap-4 z-10">
+        <div class="flex items-center gap-2.5">
+          <span id="modal-tag" class="font-mono text-xs font-medium px-2.5 py-0.5 rounded bg-cyan-50 text-cyan-800 border border-cyan-200">
+            Category
+          </span>
+          <span id="modal-code" class="font-mono text-xs text-slate-400">PRJ-01</span>
+        </div>
+        <button type="button" onclick="closeProjectModal()" aria-label="Close modal"
+                class="p-1.5 rounded-lg text-slate-500 hover:text-navy-900 hover:bg-slate-100 border border-transparent hover:border-slate-200 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Content -->
+      <div class="p-6 sm:p-8 space-y-6">
+        <div>
+          <h3 id="modal-title" class="text-xl sm:text-2xl font-bold text-navy-900">Project Title</h3>
+          <div id="modal-tools" class="flex flex-wrap gap-1.5 mt-3"></div>
+        </div>
+
+        <!-- Problem Statement -->
+        <div class="space-y-1.5">
+          <h4 class="font-mono text-xs uppercase tracking-wider text-steel-600 font-semibold">01 // Problem Statement</h4>
+          <p id="modal-problem" class="text-sm sm:text-base text-slate-600 leading-relaxed"></p>
+        </div>
+
+        <!-- Engineering Approach / Governing Equations -->
+        <div class="space-y-2">
+          <h4 class="font-mono text-xs uppercase tracking-wider text-steel-600 font-semibold">02 // Engineering Approach & Governing Equations</h4>
+          <div id="modal-equation" class="bg-navy-950 text-cyan-300 font-mono text-xs sm:text-sm px-4 py-3 rounded-lg border border-navy-800 overflow-x-auto"></div>
+          <p id="modal-approach" class="text-sm sm:text-base text-slate-600 leading-relaxed pt-1"></p>
+        </div>
+
+        <!-- Key Results -->
+        <div class="space-y-2">
+          <h4 class="font-mono text-xs uppercase tracking-wider text-steel-600 font-semibold">03 // Key Engineering Results</h4>
+          <ul id="modal-results" class="space-y-2 text-sm text-slate-700"></ul>
+        </div>
+
+        <!-- Modal Footer Actions -->
+        <div class="pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+          <a id="modal-github" href="https://github.com/maximli" target="_blank" rel="noopener"
+             class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-navy-900 hover:bg-navy-800 text-white text-sm font-medium transition-colors">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+            </svg>
+            <span>View Repository on GitHub</span>
+          </a>
+          <button type="button" onclick="closeProjectModal()"
+                  class="px-4 py-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium transition-colors">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Non-blocking Toast Notification (replaces alert()) -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden items-center gap-2.5 bg-navy-900 text-white border border-cyan-500/50 px-4 py-3 rounded-lg shadow-lg font-mono text-xs">
+    <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+    <span id="toast-message">Copied to clipboard</span>
+  </div>
+
+  <!-- =====================================================================
+       JAVASCRIPT: FILTERING, PROJECT MODAL DATA & INTERACTIONS
+       ===================================================================== -->
+  <script>
+    // Structured project details for the interactive modal.
+    // Update the 'githubUrl' fields below as you push your repos to GitHub.
+    const PROJECTS_DATA = {
+      suspension: {
+        code: 'PRJ-01',
+        tag: 'Simulation & MATLAB',
+        title: 'Quarter-Car Suspension Dynamics Simulator',
+        tools: ['MATLAB', 'Simulink', 'ODE45', 'State-Space Modeling'],
+        problem:
+          'Vehicle suspension design requires balancing two competing objectives: isolating the sprung chassis mass from road surface disturbances (ride comfort) while rapidly attenuating oscillations to maintain tire-road contact (handling and settling time).',
+        equation:
+          'm_s·ẍ_s + c_s(ẋ_s - ẋ_u) + k_s(x_s - x_u) = 0   |   ζ = c / (2·√(k·m))',
+        approach:
+          'Formulated the equations of motion as a coupled second-order ODE system and converted them into state-space representation in MATLAB and Simulink. Simulated step inputs and half-sine speed-bump profiles across damping ratios ζ ∈ [0.15, 1.2].',
+        results: [
+          'Quantified trade-off curve between peak vertical chassis acceleration and 2% settling time.',
+          'Demonstrated that ζ ≈ 0.30–0.40 minimizes passenger RMS acceleration while keeping overshoot below 35%.',
+          'Packaged automated plotting scripts for direct comparison of underdamped, critically damped, and overdamped regimes.'
+        ],
+        githubUrl: 'https://github.com/maximli/quarter-car-suspension-sim'
+      },
+      bridge: {
+        code: 'PRJ-02',
+        tag: 'Structural & Data',
+        title: 'Ecological Cycle-Pedestrian Bridge (Buda Canal)',
+        tools: ['Structural Mechanics', 'CAD Layout', 'Load Path Analysis', 'Team Design'],
+        problem:
+          'Design a functional cycle-pedestrian crossing over the Buda Canal that simultaneously acts as a safe green ecological corridor for local fauna, without obstructing canal shipping clearance.',
+        equation:
+          'T_cable = (w · L_span) / (2 · sin(θ))   |   ΣF_y = 0, ΣM = 0',
+        approach:
+          'Developed an S-curved alignment with dual concrete piers supporting an asymmetric fan of full-locked coil stay cables. Separated pedestrian/cyclist lanes from a graded soil-substrate ecological strip using lightweight retaining curbs.',
+        results: [
+          'Estimated dead loads from multi-layer ecological soil substrates, drainage, and structural deck elements.',
+          'Balanced cable inclination angles to limit horizontal compressive thrust on the S-curved deck.',
+          'Delivered complete conceptual CAD elevation/section drawings and technical pitch for the SBE Student Challenge.'
+        ],
+        githubUrl: 'https://github.com/maximli/buda-canal-ecocycloduct'
+      },
+      planetary: {
+        code: 'PRJ-03',
+        tag: 'CAD & Prototyping',
+        title: 'Parametric Planetary Gear & Tolerance Study',
+        tools: ['Autodesk Fusion', 'Parametric CAD', 'FDM 3D Printing', 'FabLab Leuven'],
+        problem:
+          'Theoretical involute gear geometry assumes zero manufacturing deviation, whereas consumer and rapid-prototyping FDM 3D printers introduce nozzle-width expansion and layer-seam friction that cause binding.',
+        equation:
+          'i = 1 + (Z_ring / Z_sun)   |   Z_ring = Z_sun + 2·Z_planet   |   c_radial ∈ [0.15, 0.35] mm',
+        approach:
+          'Built a fully parameter-driven involute planetary gear train (sun, 3 planets, carrier, and internal ring gear) in Autodesk Fusion. Exported test coupons with stepped radial and axial clearances and fabricated them at FabLab Leuven.',
+        results: [
+          'Validated that 0.25 mm radial tooth-flank clearance yields smooth low-torque rotation in PLA+ without backlash slop.',
+          'Designed snap-fit carrier pins eliminating secondary metal fasteners for rapid assembly.',
+          'Documented design-for-additive-manufacturing (DfAM) guidelines for future P&O mechanical builds.'
+        ],
+        githubUrl: 'https://github.com/maximli/parametric-planetary-gear'
+      },
+      beam: {
+        code: 'PRJ-04',
+        tag: 'Structural & Data',
+        title: 'Automated Beam Bending & Stress Solver',
+        tools: ['Python', 'NumPy', 'Matplotlib', 'Mechanics of Materials'],
+        problem:
+          'Manual calculation of shear force and bending moment diagrams across multi-load beams is repetitive and error-prone during early-stage mechanical sizing of shafts and structural members.',
+        equation:
+          'dV/dx = -q(x),   dM/dx = V(x)   |   σ_max = (M_max · y_max) / I_z   |   SF = σ_yield / σ_max',
+        approach:
+          'Wrote a modular Python solver using NumPy discretization to compute reaction forces, internal shear V(x), bending moment M(x), and area moments of inertia I_z for rectangular, hollow circular, and I-beam sections.',
+        results: [
+          'Automatically locates peak bending moment coordinates and flags designs below a target yield safety factor.',
+          'Generates publication-ready multi-panel Matplotlib figures of load distribution, V(x), and M(x).',
+          'Verified numerical solver accuracy against analytical closed-form Euler-Bernoulli solutions (< 0.1% error).'
+        ],
+        githubUrl: 'https://github.com/maximli/beam-bending-solver'
+      }
+    };
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('menu-icon-open');
+    const iconClose = document.getElementById('menu-icon-close');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden', !isHidden);
+      iconOpen.classList.toggle('hidden', isHidden);
+      iconClose.classList.toggle('hidden', !isHidden);
+    });
+
+    // Close mobile menu when clicking a link
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      });
+    });
+
+    // Category Filter Logic
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const selectedFilter = btn.getAttribute('data-filter');
+
+        // Update active button styling
+        filterButtons.forEach(b => {
+          b.classList.remove('bg-navy-900', 'text-white', 'border-navy-900');
+          b.classList.add('bg-slate-50', 'text-slate-700', 'border-slate-200');
+        });
+        btn.classList.remove('bg-slate-50', 'text-slate-700', 'border-slate-200');
+        btn.classList.add('bg-navy-900', 'text-white', 'border-navy-900');
+
+        // Filter project cards
+        projectCards.forEach(card => {
+          const cardCategory = card.getAttribute('data-category');
+          if (selectedFilter === 'all' || cardCategory === selectedFilter) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // Project Modal Functions
+    const modal = document.getElementById('project-modal');
+
+    function openProjectModal(projectId) {
+      const data = PROJECTS_DATA[projectId];
+      if (!data) return;
+
+      document.getElementById('modal-code').textContent = data.code;
+      document.getElementById('modal-tag').textContent = data.tag;
+      document.getElementById('modal-title').textContent = data.title;
+      document.getElementById('modal-problem').textContent = data.problem;
+      document.getElementById('modal-equation').textContent = data.equation;
+      document.getElementById('modal-approach').textContent = data.approach;
+      document.getElementById('modal-github').href = data.githubUrl;
+
+      // Render tool badges
+      const toolsContainer = document.getElementById('modal-tools');
+      toolsContainer.innerHTML = data.tools
+        .map(t => `<span class="font-mono text-xs bg-slate-100 border border-slate-200 text-navy-900 px-2.5 py-0.5 rounded">${t}</span>`)
+        .join('');
+
+      // Render results list
+      const resultsContainer = document.getElementById('modal-results');
+      resultsContainer.innerHTML = data.results
+        .map(r => `
+          <li class="flex items-start gap-2.5">
+            <span class="font-mono text-cyan-600 font-bold mt-0.5">›</span>
+            <span>${r}</span>
+          </li>
+        `)
+        .join('');
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProjectModal() {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    // Close modal on backdrop click or Escape key
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeProjectModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeProjectModal();
+      }
+    });
+
+    // Toast notification helper
+    let toastTimeout;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').textContent = message;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex');
+      }, 3000);
+    }
+
+    // Clipboard copy using execCommand fallback for iframe/browser compatibility
+    function copyEmail() {
+      const email = document.getElementById('email-text').textContent.trim();
+      const tempInput = document.createElement('textarea');
+      tempInput.value = email;
+      tempInput.setAttribute('readonly', '');
+      tempInput.style.position = 'absolute';
+      tempInput.style.left = '-9999px';
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand('copy');
+        showToast('Email copied: ' + email);
+      } catch (err) {
+        showToast('Email: ' + email);
+      }
+      document.body.removeChild(tempInput);
+    }
+
+    // Helpful reminder when clicking Download CV before uploading the PDF file
+    function handleCvClick(event) {
+      // If deployed on GitHub Pages with Maxim_Li_CV.pdf in the root folder, it opens normally.
+      // In local preview without the PDF yet, show a subtle status toast.
+      if (window.location.protocol === 'about:' || window.location.hostname === '') {
+        event.preventDefault();
+        showToast('Place Maxim_Li_CV.pdf in your repo root to activate download.');
+      }
+    }
+  </script>
+</body>
+</html>
